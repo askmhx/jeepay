@@ -83,6 +83,11 @@ public class WxpayV3Util {
         return JSON.parseObject(response);
     }
 
+    public static JSONObject closeOrderV3(String url, JSONObject reqJSON, WxPayConfig wxPayConfig) throws WxPayException {
+        String response = postV3(PAY_BASE_URL + url, reqJSON.toJSONString(), wxPayConfig);
+        return JSON.parseObject(response);
+    }
+
     public static JSONObject refundV3(JSONObject reqJSON, WxPayConfig wxPayConfig) throws WxPayException {
         String url = String.format("%s/v3/refund/domestic/refunds", PAY_BASE_URL);
         String response = postV3(url, reqJSON.toJSONString(), wxPayConfig);
@@ -283,7 +288,7 @@ public class WxpayV3Util {
         }
     }
 
-    public static String processIsvPayer(String subAppId, String openId) {
+    public static JSONObject processIsvPayer(String subAppId, String openId) {
         JSONObject payer = new JSONObject();
         // 子商户subAppId不为空
         if (StringUtils.isNotBlank(subAppId)) {
@@ -291,7 +296,7 @@ public class WxpayV3Util {
         }else {
             payer.put("sp_openid", openId); // 用户在服务商appid下的唯一标识
         }
-        return payer.toJSONString();
+        return payer;
     }
 
 }
